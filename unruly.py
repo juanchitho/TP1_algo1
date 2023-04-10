@@ -115,4 +115,9 @@ print(crear_grilla([
         ' 1  1 ',
         '  1  0',
     ]))
-print(dimensiones(crear_grilla([[' ', ' ', 1, ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', ' '], [' ', 1, ' ', ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', 0]])))
+print(dimensiones(crear_grilla([
+        '  1 1 ',
+        '  1   ',
+        ' 1  1 ',
+        '  1  0',
+    ])))
