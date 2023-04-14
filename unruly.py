@@ -36,9 +36,9 @@ def crear_grilla(desc: List[str]) -> Grilla:
             if desc[fila][columna] == ' ':
                 nueva_fila.append(' ')
             elif desc[fila][columna] == '1':
-                nueva_fila.append(1)
+                nueva_fila.append('1')
             elif desc[fila][columna] == '0':
-                nueva_fila.append(0)
+                nueva_fila.append('0')
         Grilla.append(nueva_fila)
     return Grilla
 
@@ -57,32 +57,52 @@ def dimensiones(grilla: Grilla) -> Tuple[int, int]:
 def posicion_es_vacia(grilla: Grilla, col: int, fil: int) -> bool:
     """Devuelve un booleano indicando si la posición de la grilla dada por las
     coordenadas `col` y `fil` está vacía"""
-
+    
+    if grilla[fil-1][col-1] == ' ':
+        return True
+    else:
+        return False
 
 def posicion_hay_uno(grilla: Grilla, col: int, fil: int) -> bool:
     """Devuelve un booleano indicando si la posición de la grilla dada por las
     coordenadas `col` y `fil` está el valor 1"""
+    if grilla[fil-1][col-1] == '1':
+        return True
+    else:
+        return False
+
 
 
 def posicion_hay_cero(grilla: Grilla, col: int, fil: int) -> bool:
     """Devuelve un booleano indicando si la posición de la grilla dada por las
     coordenadas `col` y `fil` está el valor 0"""
+    if grilla[fil-1][col-1] == '0':
+        return True
+    else:
+        return False
+    
+
 
 
 def cambiar_a_uno(grilla: Grilla, col: int, fil: int):
     """Modifica la grilla, colocando el valor 1 en la posición de la grilla
     dada por las coordenadas `col` y `fil`"""
+    grilla[fil-1][col-1] = '1'
+    #print(grilla)
 
 
 def cambiar_a_cero(grilla: Grilla, col: int, fil: int):
     """Modifica la grilla, colocando el valor 0 en la posición de la grilla
     dada por las coordenadas `col` y `fil`"""
+    grilla[fil-1][col-1] = '0'
+    #print(grilla)
 
 
 def cambiar_a_vacio(grilla: Grilla, col: int, fil: int):
     """Modifica la grilla, eliminando el valor de la posición de la grilla
     dada por las coordenadas `col` y `fil`"""
-
+    grilla[fil-1][col-1] = ' '
+    #print(grilla)
 
 def fila_es_valida(grilla: Grilla, fil: int) -> bool:
     """Devuelve un booleano indicando si la fila de la grilla denotada por el
@@ -93,6 +113,17 @@ def fila_es_valida(grilla: Grilla, fil: int) -> bool:
         - La fila tiene la misma cantidad de unos y ceros
         - La fila no contiene tres casilleros consecutivos del mismo valor
     """
+    fila = grilla[fil-1]
+    if ' ' in fila:
+        return False
+    else:
+        if fila.count(1) == fila.count(0):
+            for i in range(len(fila)-2):
+                if fila[i] == fila[i+1] == fila[i+2]:
+                    return False
+            return True
+        else:
+            return False
 
 
 def columna_es_valida(grilla: Grilla, col: int) -> bool:
@@ -101,6 +132,19 @@ def columna_es_valida(grilla: Grilla, col: int) -> bool:
 
     Las condiciones para que una columna sea válida son las mismas que las
     condiciones de las filas."""
+    columna = []
+    for i in range(len(grilla)):
+        columna.append(grilla[i][col-1])
+    if ' ' in columna:
+        return False
+    else:
+        if columna.count(1) == columna.count(0):
+            for i in range(len(columna)-2):
+                if columna[i] == columna[i+1] == columna[i+2]:
+                    return False
+            return True
+        else:
+            return False
 
 
 def grilla_terminada(grilla: Grilla) -> bool:
@@ -108,6 +152,13 @@ def grilla_terminada(grilla: Grilla) -> bool:
 
     Una grilla se considera terminada si todas sus filas y columnas son
     válidas."""
+    for i in range(len(grilla)):
+        if fila_es_valida(grilla, i+1) == False:
+            return False
+    for i in range(len(grilla[0])):
+        if columna_es_valida(grilla, i+1) == False:
+            return False
+    return True
 
 print(crear_grilla([
         '  1 1 ',
@@ -121,3 +172,9 @@ print(dimensiones(crear_grilla([
         ' 1  1 ',
         '  1  0',
     ])))
+print(posicion_hay_uno([[' ', ' ', 1, ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', ' '], [' ', 1, ' ', ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', 0]],6,4))
+cambiar_a_uno([[' ', ' ', 1, ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', ' '], [' ', 1, ' ', ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', 0]],1,1)
+cambiar_a_vacio([[' ', ' ', 1, ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', ' '], [' ', 1, ' ', ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', 0]],6,4)
+print(fila_es_valida([[' ', ' ', 1, ' ', 1, ' '], [' ', ' ', 1, ' ', ' ', ' '], [' ', 1, ' ', ' ', 1, ' '], [0, 1, 0, 1, 1, 0]],4))
+print(columna_es_valida([['1', ' ', 1, ' ', 1, 1], [' ', ' ', 1, ' ', ' ', 0], [' ', 1, ' ', ' ', 1, 1], [0, 1, 0, 1, 1, 0]],6))
+print(grilla_terminada([[0, 0, 1, 0, 1, 1], [0, 1, 0, 1, 0, 1], [1, 0, 1, 0, 1, 0], [1, 1, 0, 1, 0, 0]]))
